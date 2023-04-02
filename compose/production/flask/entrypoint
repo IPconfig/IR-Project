@@ -7,5 +7,5 @@ set -o pipefail
 # exits if any of your variables is not set
 set -o nounset
 
-# run flask
-flask run --host=0.0.0.0
+# used to make the entrypoint a pass through to ensure that Docker runs the command the user passes in
+exec "$@"

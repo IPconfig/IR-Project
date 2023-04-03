@@ -91,6 +91,10 @@ h1 {
   margin: 0 0 .5em;
 }
 
+input {
+  color: #FFF;
+}
+
 .logo-delft {
   display: block;
   width: 150px;
@@ -211,6 +215,23 @@ h1 {
 .filters {
   background-color: #F1F2F2;
   padding: 1.5em 20px 200px;
+}
+
+.ul-query {
+  text-align: left;
+}
+
+.li-query {
+  color: black;
+}
+
+.li-query:before {
+   content: '●';
+}
+
+.li-query:hover {
+  color: #00A6D6;
+  cursor:pointer;
 }
 
 .documents {

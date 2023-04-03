@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request, redirect
 
 from project import create_app
 from models import Document
@@ -22,8 +22,14 @@ mock_documents = [doc, doc, doc]
 
 @app.route("/")
 def index():
-    return render_template('search.html', documents=mock_documents, query='sorting machine')
+    return render_template('search.html', documents=mock_documents)
 
-@app.route('/document/<document_id>')
+@app.route('/search', methods=['POST'])
+def search():
+    query = request.form["search-query"]
+    return render_template('search.html', documents=mock_documents, query=query)
+
+
+@app.route("/document/<document_id>")
 def document(document_id):
     return render_template('document.html', document=doc)

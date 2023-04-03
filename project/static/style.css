@@ -84,6 +84,13 @@ dd a {
   color: #00A6D6;
 }
 
+h1 {
+  color: #00A6D6;
+  font-size: 39px;
+  line-height: 1em;
+  margin: 0 0 .5em;
+}
+
 .logo-delft {
   display: block;
   width: 150px;

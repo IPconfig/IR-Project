@@ -21,4 +21,4 @@ def index():
     )
 
 
-    return render_template('search.html', documents=[doc, doc, doc])
+    return render_template('search.html', documents=[doc, doc, doc], query='sorting machine')

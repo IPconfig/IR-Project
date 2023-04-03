@@ -16,9 +16,16 @@
       </div>
       <div class="row">
         <div class="col-md-3 filters rounded-start">
+            {% if query %}
             <div class="row">
-                <h5>Query</h5>
+                <h5 style="color: #00A6D6">Query</h5>
+                <ul style="text-align: left">
+                    <li class="first-li">
+                        {{ query }}
+                    </li>
+                </ul>
             </div>
+            {% endif %}
             <div class="row">
                 <h5>Collection</h5>
             </div>
@@ -38,9 +45,11 @@
         <div class="col-md-9 documents rounded-end">
             <div class="row pagination rounded">
                 <div class="col-md-5">
+                    {% if query %}
                     <div class="row row-bottom-margin">
-                        <p>Searched for:</p>
+                        <p>Searched for: {{ query }}</p>
                     </div>
+                    {% endif %}
                     <div class="row row-bottom-margin">
                         <p>(1 - {{ documents|length }} of {{ documents|length  }})</p>
                     </div>

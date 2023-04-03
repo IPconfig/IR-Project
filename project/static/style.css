@@ -137,28 +137,34 @@ dd a {
   text-decoration: none; 
 }
 
-#icon-research {
-  text-indent: -99999em;
-  background-position: 50% 50%;
+#icon-education, #icon-research, #icon-cultural {
+  display: block;
+  width: 50px;
+  height: 50px;
   background-size: 50px;
-  background-image: url(images/repo-research.png);
+  background-position: 50% 50%;
   background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -99999em;
+
+}
+
+#icon-education:hover, #icon-research:hover, #icon-cultural:hover {
+  width: 55px;
+  height: 55px;
+  background-size: 55px;
+}
+
+#icon-research {
+  background-image: url(images/repo-research.png);
 }
 
 #icon-education {
-  text-indent: -99999em;
-  background-position: 50% 50%;
-  background-size: 50px;
   background-image: url(images/repo-education.png);
-  background-repeat: no-repeat;
 }
 
 #icon-cultural {
-  text-indent: -99999em;
-  background-position: 50% 50%;
-  background-size: 50px;
   background-image: url(images/repo-cultural.png);
-  background-repeat: no-repeat;
 }
 
 #section-title {
@@ -223,43 +229,28 @@ dd a {
   height: 5px;
 }
 
-.icon-list-view {
+.icon-list-view, .icon-grid-view, .icon-lines {
   display: block;
   width: 25px;
   height: 25px;
-  background-image: url(images/listview.png);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   overflow: hidden;
   text-indent: -99999em;
   border-radius: 4px;
   border: 1px solid #00A6D6;
+}
+
+.icon-list-view {
+  background-image: url(images/listview.png);
 }
 
 .icon-grid-view {
-  display: block;
-  width: 25px;
-  height: 25px;
   background-image: url(images/gridview.png);
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  text-indent: -99999em;
-  border-radius: 4px;
-  border: 1px solid #00A6D6;
 }
 
 .icon-lines {
-  display: block;
-  width: 25px;
-  height: 25px;
   background-image: url(images/options.png);
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  text-indent: -99999em;
-  border-radius: 4px;
-  border: 1px solid #00A6D6;
 }
 
 .document-results {

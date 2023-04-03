@@ -1,0 +1,109 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row" id="section-title">
+          <div class="col-md-11">
+            <p>Search results · all repositories</p>
+          </div>
+          <div class="col-md-1">
+              <div id="back-link">
+                <a id="icon-arrow-left" href="#" title="Back" onclick="window.history.back();">
+                    <span class="element-invisible">Back</span>
+                </a>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 filters rounded-start">
+            <div class="row">
+                <h5>Query</h5>
+            </div>
+            <div class="row">
+                <h5>Collection</h5>
+            </div>
+            <div class="row">
+                <h5>Document Type</h5>
+            </div>
+            <div class="row">
+                <h5>Subject</h5>
+            </div>
+            <div class="row">
+                <h5>Author</h5>
+            </div>
+            <div class="row">
+                <h5>Date</h5>
+            </div>
+        </div>
+        <div class="col-md-9 documents rounded-end">
+            <div class="row pagination rounded">
+                <div class="col-md-5">
+                    <div class="row row-bottom-margin">
+                        <p>Searched for:</p>
+                    </div>
+                    <div class="row row-bottom-margin">
+                        <p>(1 - {{ documents|length }} of {{ documents|length  }})</p>
+                    </div>
+                    <div class="row row-bottom-margin">
+                        <p>Sort by:  <a>Document Type</a> <a>Date</a> </p>
+                    </div>
+                </div>
+                <div class="col-md-5 row-top-margin">
+                    <p> 1 .. {{ documents|length  }} </p>
+                </div>
+                <div class="col-md-2">
+                    <div class="row row-top-margin">
+                        <div class="col">
+                            <a title="List view" href="">
+                                <i class="icon-list-view">List view</i>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a title="Grid view" href="">
+                                <i class="icon-grid-view">Grid view</i>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <div class="dropdown">
+                              <i class="dropdown-toggle icon-lines" data-bs-toggle="dropdown" aria-expanded="false">test</i>
+                              <ul class="dropdown-menu">
+                                <li class="first-li"><a class="dropdown-item" href="#">Print</a></li>
+                                <li class="first-li"><a class="dropdown-item" href="#">Email</a></li>
+                                <li class="first-li"><a class="dropdown-item" href="#">export CSV</a></li>
+                                <li class="first-li"><a class="dropdown-item" href="#">export Excel</a></li>
+                              </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row document-results">
+                {% for doc in documents %}
+                    {% if loop.index % 2 == 1 %}
+                        <dl style="background-color: #F1F2F2;">
+                    {% else %}
+                        <dl>
+                    {% endif %}
+                            <dt>
+                                <i class="icon-document"></i>
+                                <span class="doc-span">document</span>
+                            </dt>
+                            <dd>
+                                <div>
+                                    <a href="" title="doc.title">{{ doc.title }}</a>
+                                </div>
+                                {{ doc.authors }}
+                                <div>
+                                    {{ doc.abstract }}
+                                </div>
+                                <em> {{ doc.doctype }} {{ doc.date }}</em>
+
+                            </dd>
+                        </dl>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

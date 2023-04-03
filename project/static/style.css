@@ -59,6 +59,31 @@ li::before {
   content: " | ";
 }
 
+dl {
+  width: 100%;
+  overflow: hidden;
+  padding: 10px;
+  margin: 0
+}
+dt {
+  float: left;
+  width: 10%;
+  /* adjust the width; make sure the total of both is 100% */
+  padding: 0;
+  margin: 0
+}
+dd {
+  float: left;
+  width: 90%;
+  /* adjust the width; make sure the total of both is 100% */
+  padding: 0;
+  margin: 0
+}
+
+dd a {
+  color: #00A6D6;
+}
+
 .logo-delft {
   display: block;
   width: 150px;
@@ -143,6 +168,32 @@ li::before {
   margin: 0 80px;
 }
 
+#back-link {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  position: relative;
+  top: 30px;
+  left: 150px;
+  border-radius: 20px;
+  background-color: #FFF;
+  color: #000;
+}
+
+#icon-arrow-left {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-size: 20px,20px;
+  background-image: url(images/arrow-left.svg);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -99999em;
+}
+
+#icon-arrow-left:hover {
+  opacity: 50%;
+}
 
 .filters {
   background-color: #F1F2F2;
@@ -151,8 +202,85 @@ li::before {
 
 .documents {
   background-color: #FFF;
+  padding: 1.5em 30px 200px;
 }
 
 .first-li::before {
   content: "";
+}
+
+.pagination {
+    padding: 10px .5em;
+    background-color: #D1D3D4;
+}
+
+.row-top-margin {
+  margin-top: 2em;
+}
+
+.row-bottom-margin {
+  margin-bottom:20px;
+  height: 5px;
+}
+
+.icon-list-view {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-image: url(images/listview.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -99999em;
+  border-radius: 4px;
+  border: 1px solid #00A6D6;
+}
+
+.icon-grid-view {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-image: url(images/gridview.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -99999em;
+  border-radius: 4px;
+  border: 1px solid #00A6D6;
+}
+
+.icon-lines {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-image: url(images/options.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -99999em;
+  border-radius: 4px;
+  border: 1px solid #00A6D6;
+}
+
+.document-results {
+  margin-top: 30px;
+}
+
+.icon-document {
+  display: block;
+  width: 30px;
+  height: 40px;
+  background-image: url(images/document.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  margin-left: 25%;
+  margin-top: 25%;
+}
+
+.doc-span {
+  font-size: .76923em;
+  margin-left: 20%;
+  margin-top: 25%;
+  color: #58595B;
 }

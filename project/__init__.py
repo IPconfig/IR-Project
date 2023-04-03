@@ -19,6 +19,10 @@ def create_app(config_name=None):
     app.config.from_object(config[config_name])
 
     # set up extensions here when we have them
+    
+    # register blueprints
+    from project.errors import errors_blueprint
+    app.register_blueprint(errors_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor

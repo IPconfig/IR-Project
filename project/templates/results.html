@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .pagination {
+            text-align: center;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        .pagination a:hover {
+            background: #eee;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Search Results</h1>
+    {% for row in table %}
+    <div class="search-result">
+      <!-- <img src="{{ row.icon }}" alt="Document icon" class="icon"> -->
+      <div class="result-info">
+        <h3>{{ row.title }}</h3>
+        <p class="abstract">{{ row.abstract }}</p>
+        <div class="keywords">
+          <ul>
+            {% for keyword in row.subject_topic %}
+              <li>
+                <input type="radio" name="keywords" value="{{ keyword }}" id="{{ keyword }}">
+                <label for="{{ keyword }}">{{ keyword }}</label>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+
+
+    {% if num_rows > per_page %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}">&laquo; Previous</a>
+        {% endif %}
+
+        {% if page * per_page < num_rows %}
+        <a href="?page={{ page + 1 }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}

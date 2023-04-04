@@ -58,7 +58,16 @@
                         <p>(1 - {{ documents|length }} of {{ documents|length  }})</p>
                     </div>
                     <div class="row row-bottom-margin">
-                        <p>Sort by:  <a href="" style="color:#00A6D6">Document Type</a> · <a href="" style="color:#00A6D6">Date</a> </p>
+                        <div class="col-md-2">Sort by</div>
+                       <div class="dropdown col">
+                          <i class="dropdown-toggle sort" data-bs-toggle="dropdown" aria-expanded="false">sortType</i>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li class="first-li"><a class="dropdown-item" href="{{ url_for('sort', sort_type='doc_asc', documents=documents, query=query) }}">Document Type Asc</a></li>
+                            <li class="first-li"><a class="dropdown-item" href="{{ url_for('sort', sort_type='doc_desc', documents=documents, query=query) }}">Document Type Desc</a></li>
+                            <li class="first-li"><a class="dropdown-item" href="{{ url_for('sort', sort_type='date_asc', documents=documents, query=query) }}">Date Asc</a></li>
+                            <li class="first-li"><a class="dropdown-item" href="{{ url_for('sort', sort_type='date_desc', documents=documents, query=query) }}">Date Desc</a></li>
+                          </ul>
+                       </div>
                     </div>
                 </div>
                 <div class="col-md-5 row-top-margin">
@@ -104,7 +113,7 @@
                             </dt>
                             <dd>
                                 <div>
-                                    <a href="{{ url_for('document', document_id=doc.document_id) }}" title="doc.title">{{ doc.title }}</a>
+                                    <a href="{{ url_for('document', document_id=doc.document_id, query=query) }}" title="doc.title">{{ doc.title }}</a>
                                 </div>
                                 {{ doc.authors }}
                                 <div>

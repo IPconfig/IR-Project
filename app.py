@@ -26,10 +26,31 @@ def index():
 
 @app.route('/search', methods=['POST'])
 def search():
-    query = request.form["search-query"]
+    query = request.form.get("search-query", type=str, default=None)
+
+    # search for documents
+
     return render_template('search.html', documents=mock_documents, query=query)
 
+@app.route('/sort')
+def sort():
+    documents = request.args.getlist('documents')
+    query =  request.args.get('query',type=str, default=None)
+    sort_type = request.args.get('sort_type', type=str, default=None)
 
-@app.route("/document/<document_id>")
-def document(document_id):
-    return render_template('document.html', document=doc)
+    # Sort documents
+
+
+    return render_template('search.html', documents=mock_documents, query=query)
+
+@app.route("/document")
+def document():
+    document_id = request.args.get('document_id', type=str, default=None)
+    query =  request.args.get('query', type=str, default=None)
+    if document_id:
+
+        # Logic for getting specific document
+
+        return render_template('document.html', document=doc, query=query)
+    else:
+        return redirect('search.html', code=302)

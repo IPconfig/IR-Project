@@ -63,7 +63,6 @@ def process_results(csv_data: pd.DataFrame):
     results = []
     csv_data = csv_data.fillna('') # convert NaN values to empty strings
     
-    
     for _, row in csv_data.iterrows():        
         subject_topics = row['subject topic'].split("; ")[:9]
         results.append({

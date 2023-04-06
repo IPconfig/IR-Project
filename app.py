@@ -47,8 +47,8 @@ def search():
     if results is None:
         abort(404)
     else:
-        table = process_results(results) # table is a list of documents
-        total_documents = len(table)
+        document_list = process_results(results) # table is a list of documents
+        total_documents = len(document_list)
         total_pages = math.ceil(total_documents / per_page)
         
         print(f"total documents: {total_documents}")
@@ -57,33 +57,9 @@ def search():
         page = int(request.args.get('page', 1))
         start_idx = (page - 1) * per_page
         end_idx = min(start_idx + per_page, total_documents)
-        page_table = table[start_idx:end_idx]
+        document_slice = document_list[start_idx:end_idx]
 
-    return render_template('search.html', documents=page_table, query=query, total_documents=total_documents, start_idx=start_idx, end_idx=end_idx, page=page, total_pages = total_pages, new_search=clear_selected_topics)
-
-# @app.route("/search2/<search_term>", methods=['GET'])
-# def search(search_term):
-#     global SEARCH_TERM
-    
-#     results = get_search_results(search_term)
-#     if results is None:
-#         abort(404)
-#     else:
-#         # Paginate DataFrame and process results
-#         per_page = 20
-#         page = int(request.args.get('page', 1))
-#         start_idx = (page - 1) * per_page
-#         end_idx = start_idx + per_page
-#         page_df = results.iloc[start_idx:end_idx]
-#         table = process_results(page_df)
-        
-#         # Check if a new search is being performed in order to reset the selected keywords
-#         if search_term==SEARCH_TERM:
-#             new_search = False
-#         else:
-#             SEARCH_TERM = search_term
-#             new_search = True
-#         return render_template('results.html', table=table, page=page, per_page=per_page, num_rows=len(results), new_search=new_search)
+    return render_template('search.html', documents=document_slice, query=query, total_documents=total_documents, start_idx=start_idx, end_idx=end_idx, page=page, total_pages = total_pages, new_search=clear_selected_topics)
 
 
 @app.route('/sort')

@@ -2,6 +2,8 @@
 import requests
 import urllib.parse
 import pandas as pd
+import re
+
 from collections import Counter
 
 from models import Document
@@ -74,23 +76,37 @@ def count_topic_frequencies(df, column):
 
 def display_frequencies(counter):
     """ Format the topic frequencies for display """
-    formatted_frequencies = ", ".join([f"{topic} ({count})" for topic, count in counter.items()])
+    formatted_frequencies = "; ".join([f"{topic} ({count})" for topic, count in counter.items()])
     return formatted_frequencies
 
 def process_results(csv_data: pd.DataFrame):
-    """ Convert DataFrame to list of dictionaries """
+    """ Convert DataFrame to list of Document objects """
     results = []
     csv_data = csv_data.fillna('') # convert NaN values to empty strings
     
     topic_frequencies = count_topic_frequencies(csv_data, 'subject topic')
     
     for _, row in csv_data.iterrows(): 
+        subject_topics = row['subject topic']
+        # add the number of times a topic appears in the results to the topic
+        if subject_topics:
+            topic_list = [topic.strip() for topic in subject_topics.split(';')]
+            updated_topics = "; ".join([f"{topic} ({topic_frequencies[topic]})" for topic in topic_list])
+        else:
+            updated_topics = ""
+            
+    # Replace everything between the parenthesis with 'Author' for each author in the list
+        if row['author']:
+            authors_cleaned = ';'.join([re.sub(r'\(.*?\)', ' (Author)', author).strip() for author in row['author'].split(';')])
+        else:
+            authors_cleaned = ""
+            
         results.append(Document(
             uuid= row['uuid'],
             title= row['title'],
             date = row['publication year'],
-            authors= row['author'],
-            subjects= row['subject topic'],
+            authors= authors_cleaned,
+            subjects= updated_topics,
             abstract= row['abstract'],
             doctype= row['publication type'],
             publisher= row['publisher'],

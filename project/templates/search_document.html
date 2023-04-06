@@ -1,3 +1,4 @@
+{% set colors = ['#FF5733', '#C70039', '#900C3F', '#581845', '#5DADE2', '#48C9B0', '#FFC300', '#FF5733', '#C70039'] %}
 {% for doc in documents %}
     {% if loop.index % 2 == 1 %}
         <dl style="background-color: #F1F2F2;">
@@ -9,16 +10,27 @@
         <span class="doc-span">document</span>
     </dt>
     <dd>
-        <div>
-            <a href="{{ url_for('document', uuid=doc.uuid, query=query) }}" title="doc.title">{{
-                doc.title }}</a>
+        <div class="row">
+            <div class="col-md-8">
+                <a href="{{ url_for('document', uuid=doc.uuid, query=query) }}" title="doc.title">{{ doc.title }}</a>
+                {{ doc.authors }}
+                <div>
+                    {{ doc.abstract|truncate(200, True, ' ...') }}
+                </div>
+                <em> {{ doc.doctype }} {{ doc.date }}</em>
+            </div>
+            <div class="col-md-4">
+                {% set subjects = doc.subjects.split(';') %}
+                {% for subject in subjects %}
+                <div class="form-check">
+                    <input class="form-check-input rounded-circle" type="checkbox" value="{{ subject }}" id="subject-{{ loop.index }}" style="background-color: {{ colors[loop.index % 9] }}">
+                    <label class="form-check-label" for="subject-{{ loop.index }}">
+                        {{ subject }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {{ doc.authors }}
-        <div>
-            {{ doc.abstract|truncate(100, True, '...') }}
-        </div>
-        <em> {{ doc.doctype }} {{ doc.date }}</em>
-
     </dd>
 </dl>
 {% endfor %}

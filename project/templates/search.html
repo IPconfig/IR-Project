@@ -43,16 +43,18 @@
             </div>
         </div>
         <div class="col-md-9 documents rounded-end">
-            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx, end_idx=end_idx, total_documents=total_documents %}
-                {% include 'search_navigation.html' %}
+            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
+            end_idx=end_idx, total_documents=total_documents %}
+            {% include 'search_navigation.html' %}
             {% endwith %}
 
             <div class="row document-results">
                 {% if documents %}
-                {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx, end_idx=end_idx, total_documents=total_documents %}
-                    {% include 'search_document.html' %}
+                {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
+                end_idx=end_idx, total_documents=total_documents %}
+                {% include 'search_document.html' %}
                 {% endwith %}
-                
+
                 {% else %}
                 <div class="col-md-12">
                     <h4>Enter a search query</h4>
@@ -62,16 +64,80 @@
 
             <!-- Pagination at end of documents if there is a long list -->
             {% if end_idx - start_idx >= 20 %}
-            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx, end_idx=end_idx, total_documents=total_documents %}
-                {% include 'search_navigation.html' %}
+            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
+            end_idx=end_idx, total_documents=total_documents %}
+            {% include 'search_navigation.html' %}
             {% endwith %}
             {% endif %}
-        
-            
-            
+
+
+
 
         </div>
     </div>
 </div>
+<!-- Clear selectedKeywords localStorage variable on a new search -->
+{% if new_search %}
+<script>
+    localStorage.removeItem("selectedKeywords");
+</script>
+{% endif %}
 
+<!-- Add JavaScript to handle checkbox selection -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedKeywords = new Set(JSON.parse(localStorage.getItem("selectedKeywords")) || []);
+
+        function updateCheckboxes() {
+            document.querySelectorAll(".keyword-checkbox").forEach(function (checkbox) {
+                checkbox.checked = selectedKeywords.has(checkbox.value);
+            });
+        }
+
+        function storeSelectedKeywords() {
+            localStorage.setItem("selectedKeywords", JSON.stringify(Array.from(selectedKeywords)));
+        }
+
+        document.querySelectorAll(".keyword-checkbox").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                if (checkbox.checked) {
+                    selectedKeywords.add(checkbox.value);
+                } else {
+                    selectedKeywords.delete(checkbox.value);
+                }
+
+                if (selectedKeywords.size > 9) {
+                    checkbox.checked = false;
+                    selectedKeywords.delete(checkbox.value);
+                }
+
+                updateCheckboxes();
+                storeSelectedKeywords();
+            });
+        });
+
+        updateCheckboxes();
+    });
+
+
+    function updateCheckboxColors() {
+        let index = 0;
+        document.querySelectorAll(".form-check-input").forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkbox.style.backgroundColor = colorMap[index % colorMap.length];
+                checkbox.style.borderColor = colorMap[index % colorMap.length];
+                index++;
+            } else {
+                checkbox.style.backgroundColor = "#fff";
+                checkbox.style.borderColor = "#ccc";
+            }
+        });
+    }
+
+    document.querySelectorAll(".form-check-input").forEach(function (checkbox) {
+        checkbox.addEventListener("change", updateCheckboxColors);
+    });
+
+    updateCheckboxColors();
+</script>
 {% endblock %}

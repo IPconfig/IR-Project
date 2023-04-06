@@ -27,7 +27,7 @@ mock_documents = [doc, doc, doc]
 
 @app.route("/")
 def index():
-    return render_template('index.html', documents=None)
+    return render_template('index.html')
 
 @app.route('/search', methods=['GET'])
 def search():

@@ -1,6 +1,6 @@
 class Document:
-    def __init__(self, document_id, title, date, authors, subjects, abstract, doctype, publisher, series, collection):
-        self.document_id = document_id
+    def __init__(self, uuid, title, date, authors, subjects, abstract, doctype, publisher, series, collection):
+        self.uuid = uuid
         self.title = title
         self.date = date
         self.authors = authors

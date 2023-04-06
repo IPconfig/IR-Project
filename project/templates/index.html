@@ -21,8 +21,8 @@
             <a href="/" class="logo-delft">TUDelft</a>
           </div>
           <div class="col-md-6">
-            <form action="{{ url_for('search') }}" method="post" id="search-form">
-              <input id="search-text" type="text" name="search-query" value="{{ query }}">
+            <form action="{{ url_for('search') }}" method="get" id="search-form">
+              <input id="search-text" type="text" name="query" value="{{ query }}">
               <input id="search-button" type="submit">
             </form>
             <div id="search-info">

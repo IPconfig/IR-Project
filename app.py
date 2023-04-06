@@ -1,6 +1,6 @@
 
 from flask import render_template, request, abort, redirect
-from document_retrieval import get_search_results, process_results
+from document_retrieval import get_search_results, process_results, filter_documents
 import pandas as pd
 import math
 
@@ -9,6 +9,7 @@ from models import Document
 
 app = create_app()
 SEARCH_TERM = ''
+DOCUMENT_LIST = []
 
 doc = Document(
     uuid=0,
@@ -32,34 +33,45 @@ def index():
 @app.route('/search', methods=['GET'])
 def search():
     global SEARCH_TERM
+    global DOCUMENT_LIST
+    
     per_page = 20
     query = request.args.get("query", type=str, default=None)
     if query is None: abort(403)
+    selected_keywords = request.args.get("selected_keywords", type=str, default=None)
+
+    if selected_keywords:
+        selected_keywords = selected_keywords.split(',')
     # Check if a new search is being performed in order to reset the selected keywords
     if query==SEARCH_TERM:
-        clear_selected_topics = False
+        clear_local_storage = False
     else:
         SEARCH_TERM = query
-        clear_selected_topics = True
-        
-    # search for documents
-    results = get_search_results(query)
-    if results is None:
-        abort(404)
-    else:
-        document_list = process_results(results) # table is a list of documents
-        total_documents = len(document_list)
-        total_pages = math.ceil(total_documents / per_page)
-        
-        print(f"total documents: {total_documents}")
-        print(f'total pages: {total_pages}')
+        DOCUMENT_LIST = []
+        clear_local_storage = True
     
-        page = int(request.args.get('page', 1))
-        start_idx = (page - 1) * per_page
-        end_idx = min(start_idx + per_page, total_documents)
-        document_slice = document_list[start_idx:end_idx]
+    if not DOCUMENT_LIST:    
+        # search for documents
+        results = get_search_results(query)
+        if results is None:
+            abort(404)
+        else:
+            DOCUMENT_LIST = process_results(results) # table is a list of documents
 
-    return render_template('search.html', documents=document_slice, query=query, total_documents=total_documents, start_idx=start_idx, end_idx=end_idx, page=page, total_pages = total_pages, new_search=clear_selected_topics)
+    if selected_keywords:
+        filtered_documents = filter_documents(DOCUMENT_LIST, selected_keywords)
+        print(filtered_documents)
+    else:
+        filtered_documents = DOCUMENT_LIST
+    
+    total_documents = len(filtered_documents)
+    print(f'total documents: {total_documents}')
+    total_pages = math.ceil(total_documents / per_page)
+    
+    page = int(request.args.get('page', 1))
+
+
+    return render_template('search.html', documents=filtered_documents, query=query, total_documents=total_documents, page = page, total_pages = total_pages, clear_local_storage=clear_local_storage)
 
 
 @app.route('/sort')

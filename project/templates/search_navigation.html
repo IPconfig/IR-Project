@@ -1,4 +1,21 @@
 <!-- this file contains the grey navigation controls in the search -->
+{% if documents %}
+    {% set total_documents = documents|length %}
+    {% if total_documents > 20 %}
+        {% set total_pages = total_documents // 20 + 1 %}
+    {% else %}
+        {% set total_pages = 1 %}
+    {% endif %}
+    {% set start_idx = (page - 1) * 20 %}
+    {% if start_idx > total_documents %}
+        {% set start_idx = 0 %}
+    {% endif %}
+    {% if start_idx + 20 < total_documents %}
+        {% set end_idx = (start_idx + 20) %}
+    {% else %}
+        {% set end_idx = total_documents %}
+    {% endif %}
+{% endif %}
 <div class="row pagination rounded">
     <div class="col-md-5">
         {% if query %}

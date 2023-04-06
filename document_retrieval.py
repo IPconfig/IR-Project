@@ -115,3 +115,13 @@ def process_results(csv_data: pd.DataFrame):
         ))       
 
     return results
+
+def filter_documents(documents, keywords):
+    """ Filter the documents based on the selected keywords """
+    filtered_documents = []
+
+    for document in documents:
+        if any(keyword in document.subjects.split(';') for keyword in keywords):
+            filtered_documents.append(document)
+
+    return filtered_documents

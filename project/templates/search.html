@@ -1,5 +1,26 @@
 {% extends 'index.html' %}
 {% block content %}
+
+{% if documents %}
+    {% set total_documents = documents|length %}
+    {% if total_documents > 20 %}
+        {% set total_pages = total_documents // 20 + 1 %}
+    {% else %}
+        {% set total_pages = 1 %}
+    {% endif %}
+    {% set start_idx = (page - 1) * 20 %}
+    {% if start_idx > total_documents %}
+        {% set start_idx = 0 %}
+    {% endif %}
+    {% if start_idx + 20 < total_documents %}
+        {% set end_idx = (start_idx + 20) %}
+    {% else %}
+        {% set end_idx = total_documents %}
+    {% endif %}
+    {% set documents_slice = documents[start_idx:end_idx] %}
+{% endif %}
+
+
 <div class="container">
     <div class="row" id="section-title">
         <div class="col-md-11">
@@ -42,15 +63,13 @@
             </div>
         </div>
         <div class="col-md-9 documents rounded-end">
-            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
-            end_idx=end_idx, total_documents=total_documents %}
+            {% with query=query, documents=documents, total_pages=total_pages, page=page %}
             {% include 'search_navigation.html' %}
             {% endwith %}
 
             <div class="row document-results">
                 {% if documents %}
-                {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
-                end_idx=end_idx, total_documents=total_documents %}
+                {% with query=query, documents=documents_slice, total_pages=total_pages, page=page %}
                 {% include 'search_document.html' %}
                 {% endwith %}
 
@@ -63,25 +82,21 @@
 
             <!-- Pagination at end of documents if there is a long list -->
             {% if end_idx - start_idx >= 20 %}
-            {% with query=query, documents=documents, total_pages=total_pages, page=page, start_idx=start_idx,
-            end_idx=end_idx, total_documents=total_documents %}
-                {% include 'search_navigation.html' %}
+            {% with query=query, documents=documents, total_pages=total_pages, page=page %}
+            {% include 'search_navigation.html' %}
             {% endwith %}
             {% endif %}
-
-
-
-
         </div>
     </div>
 </div>
-<!-- Clear selectedKeywords localStorage variable on a new search -->
-{% if new_search %}
+<!-- Clear localStorage variables on a new search -->
+{% if clear_local_storage %}
 <script>
     localStorage.removeItem("selectedKeywords");
     localStorage.removeItem("colorMapping");
 </script>
 {% endif %}
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let selectedKeywords = new Set(JSON.parse(localStorage.getItem("selectedKeywords")) || []);
@@ -129,6 +144,11 @@
 
                 // Update checkbox colors
                 updateCheckboxColors();
+
+                // Reload the page with the selected keywords as a query parameter
+                const url = new URL(window.location.href);
+                url.searchParams.set("selected_keywords", Array.from(selectedKeywords).join(','));
+                window.location.href = url.toString();
             });
         });
 

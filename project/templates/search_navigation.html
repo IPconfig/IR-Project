@@ -36,16 +36,16 @@
                 <i class="dropdown-toggle sort" data-bs-toggle="dropdown" aria-expanded="false">sortType</i>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li class="first-li"><a class="dropdown-item"
-                            href="{{ url_for('sort', sort_type='doc_asc', documents=documents, query=query) }}">Document
+                            href="{{ url_for('search', sort_type='doctype', reverse_order=False, query=query) }}">Document
                             Type Asc</a></li>
                     <li class="first-li"><a class="dropdown-item"
-                            href="{{ url_for('sort', sort_type='doc_desc', documents=documents, query=query) }}">Document
+                            href="{{ url_for('search', sort_type='doctype', reverse_order=True, query=query) }}">Document
                             Type Desc</a></li>
                     <li class="first-li"><a class="dropdown-item"
-                            href="{{ url_for('sort', sort_type='date_asc', documents=documents, query=query) }}">Date
+                            href="{{ url_for('search', sort_type='date', reverse_order=False, query=query) }}">Date
                             Asc</a></li>
                     <li class="first-li"><a class="dropdown-item"
-                            href="{{ url_for('sort', sort_type='date_desc', documents=documents, query=query) }}">Date
+                            href="{{ url_for('search', sort_type='date', reverse_order=True, query=query) }}">Date
                             Desc</a></li>
                 </ul>
             </div>

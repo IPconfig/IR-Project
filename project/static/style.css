@@ -221,8 +221,23 @@ input {
   text-align: left;
 }
 
-.li-query {
+.li-query, .li-search, .li-search-toggle {
+  color: #00A6D6;
+  float: left;
+  width: 90%;
+}
+
+.li-query, .li-search-toggle, .li-count {
   color: black;
+}
+
+.li-search:before, .li-search-toggle:before {
+  content: '';
+}
+
+.li-search:hover {
+  color: black;
+  cursor:pointer;
 }
 
 .li-query:before {
@@ -234,9 +249,17 @@ input {
   cursor:pointer;
 }
 
+.datepicker {
+  width: 100px;
+}
+
 .documents {
   background-color: #FFF;
   padding: 1.5em 30px 200px;
+}
+
+.hidden {
+  display: none;
 }
 
 .sort {
@@ -323,4 +346,21 @@ input {
 .dropdown-item:focus, .dropdown-item:hover {
   background-color: #F1F2F2;
   color: #00A6D6 !important;
+}
+
+.custom-checkbox {
+    border-radius: 50%;
+    appearance: none;
+    /* width: 20px;
+    height: 20px; */
+    background-color: #fff;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.custom-checkbox:checked {
+    background-color: transparent;
+    border: none;
 }

@@ -1,5 +1,4 @@
 <!-- this file contains the grey navigation controls in the search -->
-{% if documents %}
     {% set total_documents = documents|length %}
     {% if total_documents > 20 %}
         {% set total_pages = total_documents // 20 + 1 %}
@@ -15,7 +14,6 @@
     {% else %}
         {% set end_idx = total_documents %}
     {% endif %}
-{% endif %}
 <div class="row pagination rounded">
     <div class="col-md-5">
         {% if query %}
@@ -56,15 +54,14 @@
         <nav aria-label="Page navigation">
             <ul class="pagination" style="list-style: none; padding: 0;">
                 {% for i in range(1, total_pages + 1) %}
-                {% if i <= 3 or (i>= page and i <= page + 2) or i==total_pages %} <a class="page-link"
-                        href="{{ url_for('search', page=i, query=query) }}"
-                        style="border: none; background-color: transparent; {% if i == page %}color: #007bff;{% else %}color: #000000;{% endif %} text-decoration: none;">
-                        {{ i }}</a>
-                        {% elif i == page - 1 or i == total_pages - 1 %}
-                        <span class="page-link" aria-label="ellipsis" tabindex="-1"
-                            style="border: none; background-color: transparent; cursor: default; color: #000000;">...</span>
-                        {% endif %}
-                        {% endfor %}
+                {% if i <= 3 or (i>= page and i <= page + 2) or i==total_pages %}
+                <a class="page-link" href="{{ url_for('search', page=i, query=query, selected_keywords=request.args.get('selected_keywords', '')) }}" style="border: none; background-color: transparent; {% if i == page %}color: #007bff;{% else %}color: #000000;{% endif %} text-decoration: none;">
+                    {{ i }}</a>
+                {% elif i == page - 1 or i == total_pages - 1 %}
+                <span class="page-link" aria-label="ellipsis" tabindex="-1"
+                    style="border: none; background-color: transparent; cursor: default; color: #000000;">...</span>
+                {% endif %}
+                {% endfor %}
             </ul>
         </nav>
     </div>

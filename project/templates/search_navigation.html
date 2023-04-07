@@ -1,8 +1,10 @@
 <!-- this file contains the grey navigation controls in the search -->
     {% set total_documents = documents|length %}
-    {% if total_documents > 20 %}
+    {% if total_documents == 3000 %}
+        {% set total_pages = 150 %}
+    {% elif total_documents > 20  %}
         {% set total_pages = total_documents // 20 + 1 %}
-    {% else %}
+    {% else  %}
         {% set total_pages = 1 %}
     {% endif %}
     {% set start_idx = (page - 1) * 20 %}

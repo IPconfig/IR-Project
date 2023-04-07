@@ -70,13 +70,13 @@ def count_topic_frequencies(df, column):
     topic_counter = Counter()
     for topics in df[column]:
         if topics:
-            topic_list = [topic.strip() for topic in topics.split(';')]
+            topic_list = [topic.strip().title() for topic in topics.split(';')]
             topic_counter.update(topic_list)
     return topic_counter
 
 def display_frequencies(counter):
     """ Format the topic frequencies for display """
-    formatted_frequencies = "; ".join([f"{topic} ({count})" for topic, count in counter.items()])
+    formatted_frequencies = ";".join([f"{topic} ({count})" for topic, count in counter.items()])
     return formatted_frequencies
 
 def process_results(csv_data: pd.DataFrame):
@@ -85,13 +85,13 @@ def process_results(csv_data: pd.DataFrame):
     csv_data = csv_data.fillna('') # convert NaN values to empty strings
     
     topic_frequencies = count_topic_frequencies(csv_data, 'subject topic')
-    
     for _, row in csv_data.iterrows(): 
         subject_topics = row['subject topic']
         # add the number of times a topic appears in the results to the topic
         if subject_topics:
-            topic_list = [topic.strip() for topic in subject_topics.split(';')]
-            updated_topics = "; ".join([f"{topic} ({topic_frequencies[topic]})" for topic in topic_list])
+            topic_list = [topic.strip().title() for topic in subject_topics.split(';')]
+            
+            updated_topics = ";".join([f"{topic} ({topic_frequencies[topic]})" for topic in topic_list])
         else:
             updated_topics = ""
             
@@ -119,9 +119,10 @@ def process_results(csv_data: pd.DataFrame):
 def filter_documents(documents, keywords):
     """ Filter the documents based on the selected keywords """
     filtered_documents = []
-
+    print(f'we received {len(documents)} documents in the filter_documents function')
+    print(f'we look for the following keywords: {keywords}')
     for document in documents:
-        if any(keyword in document.subjects.split(';') for keyword in keywords):
-            filtered_documents.append(document)
+            if any(keyword in document.subjects for keyword in keywords):
+                filtered_documents.append(document)
 
     return filtered_documents

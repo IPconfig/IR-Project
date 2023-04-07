@@ -67,17 +67,18 @@
             </div>
             {% endif %}
 
+            {% if collections %}
             <div class="row">
                 <h5>Collection</h5>
-                <ul class="ul-query">
-                {% set collections = documents|map(attribute='collection')|unique|list %}
+                <ul class="ul-query list">
                 {% for collection in collections %}
                     {% if loop.index > 10 %}
                         <li class="li-search hidden-item hidden">
                     {% else %}
                          <li class="li-search">
                     {% endif %}
-                         <a href="{{ url_for('search', query=query, facet_filter=collection, facet_type='collection') }}">{{ collection }}</a>
+                         <a href="{{ url_for('search', query=query, facet_filter=collection, facet_type='collection') }}">{{ collection[0] }}</a>
+                        <span class="li-count">({{ collection[1] }})</span>
                          </li>
                     {% endfor %}
                     {% if collections|length > 10 %}
@@ -87,19 +88,20 @@
                     {% endif %}
                 </ul>
             </div>
+            {% endif %}
 
-
+            {% if doctypes %}
             <div class="row">
                 <h5>Document Type</h5>
-                <ul class="ul-query">
-                    {% set doctypes = documents|map(attribute='doctype')|unique|list %}
+                <ul class="ul-query list">
                     {% for doctype in doctypes %}
                           {% if loop.index > 10 %}
                             <li class="li-search hidden-item hidden">
                           {% else %}
                             <li class="li-search">
                           {% endif %}
-                                <a href="{{ url_for('search', query=query, facet_filter=doctype, facet_type='doctype') }}">{{ doctype }}</a>
+                                <a href="{{ url_for('search', query=query, facet_filter=doctype, facet_type='doctype') }}">{{ doctype[0] }}</a>
+                                <span class="li-count">({{ doctype[1] }})</span>
                             </li>
                     {% endfor %}
                     {% if doctypes|length > 10 %}
@@ -109,18 +111,20 @@
                     {% endif %}
                 </ul>
             </div>
+            {% endif %}
 
-
+            {% if subjects %}
             <div class="row">
                 <h5>Subject</h5>
-                <ul class="ul-query">
+                <ul class="ul-query list">
                     {% for subject in subjects %}
                         {% if loop.index > 10 %}
                         <li class="li-search hidden-item hidden">
                         {% else %}
                         <li class="li-search">
                         {% endif %}
-                            <a href="{{ url_for('search', query=query, facet_filter=subject[0], facet_type='subjects') }}">{{ subject[0] }} </a> <span class="li-count">({{ subject[1] }})</span>
+                            <a href="{{ url_for('search', query=query, facet_filter=subject[0], facet_type='subjects') }}">{{ subject[0] }} </a>
+                            <span class="li-count">({{ subject[1] }})</span>
                         </li>
                     {% endfor %}
                     {% if subjects|length > 10 %}
@@ -130,17 +134,20 @@
                     {% endif %}
                 </ul>
             </div>
+            {% endif %}
 
+            {% if authors %}
             <div class="row">
                 <h5>Author</h5>
-                <ul class="ul-query">
+                <ul class="ul-query list">
                     {% for author in authors %}
                         {% if loop.index > 10 %}
                         <li class="li-search hidden-item hidden">
                         {% else %}
                         <li class="li-search">
                         {% endif %}
-                            <a href="{{ url_for('search', query=query, facet_filter=author[0], facet_type='authors') }}">{{ author[0] }} </a> <span class="li-count">({{ author[1] }})</span>
+                            <a href="{{ url_for('search', query=query, facet_filter=author[0], facet_type='authors') }}">{{ author[0] }} </a>
+                            <span class="li-count">({{ author[1] }})</span>
                         </li>
                     {% endfor %}
                     {% if authors|length > 10 %}
@@ -150,8 +157,22 @@
                     {% endif %}
                 </ul>
             </div>
+            {% endif %}
+
             <div class="row">
                 <h5>Date</h5>
+                <div class="row">
+                    <div class="col-md-5">
+                      <div class="md-form">
+                        <input placeholder="Selected starting date" type="date" id="startingDate" class="form-control datepicker">
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <div class="md-form">
+                        <input placeholder="Selected ending date" type="date" id="endingDate" class="form-control datepicker">
+                      </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-9 documents rounded-end">

@@ -42,7 +42,7 @@ def get_search_results(search_term):
 
     # search in all collections for now
     search_url = url + search_term_encoded + search_collection[0] + save_csv[0]
-    print(search_url)
+
     response = requests.get(search_url)
     # Check if the response was successful
     if response.status_code == 200:
@@ -134,3 +134,38 @@ def facet_search(documents, filters):
                 filtered_documents.remove(document)
 
     return filtered_documents
+
+def extract_collection_doctype(documents, facet_filters):
+    collections = []
+    doc_types = []
+    if not any(facet_type[1] == 'collection' for facet_type in facet_filters):
+        collections = [doc.collection for doc in documents if doc.collection != ""]
+        collections = Counter(collections).most_common(100)
+
+    if not any(facet_type[1] == 'doctype' for facet_type in facet_filters):
+        doc_types = [doc.doctype for doc in documents if doc.doctype != ""]
+        doc_types = Counter(doc_types).most_common(100)
+    return collections, doc_types
+
+def extract_common_subjects(documents, facet_filters):
+    subjects = [subject for doc in documents for subject in doc.subjects.split(';')]
+    subjects = [subject for subject in subjects if subject not in [f[0] for f in facet_filters]]
+    unique_subjects = list(set(subjects))
+    result = []
+    for subject_txt in unique_subjects:
+        if subject_txt.strip():
+            subject = re.findall(r'^(.+?)\s*\(', subject_txt)[0].strip()
+            count = int(re.findall(r'\((\d+)\)[^()]*$', subject_txt)[0])
+            result.append((subject, count))
+    sorted_result = sorted(set(result), key=lambda x: x[1], reverse=True)[:100]
+    return sorted_result
+
+def extract_author_counts(documents, facet_filters):
+    last_names = []
+    for doc in documents:
+        for author in doc.authors.split('(author)'):
+            last_name = author.split(', ')[0].strip()
+            last_names.append(last_name)
+    last_names = [last_name for last_name in last_names if last_name not in [f[0] for f in facet_filters]]
+    authors = Counter(last_names).most_common(100)
+    return authors

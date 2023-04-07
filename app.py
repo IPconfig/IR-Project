@@ -1,6 +1,6 @@
 from collections import Counter
 from flask import render_template, request, abort, redirect
-from document_retrieval import get_search_results, process_results, filter_documents, facet_search
+from document_retrieval import get_search_results, process_results, filter_documents, facet_search, extract_collection_doctype, extract_author_counts, extract_common_subjects
 
 import math
 import re
@@ -60,38 +60,28 @@ def search():
 
     if SELECTED_FACETS:
         filtered_documents = facet_search(DOCUMENT_LIST, SELECTED_FACETS)
-        print(filtered_documents)
     else:
         filtered_documents = DOCUMENT_LIST
 
     if selected_keywords:
         filtered_documents = filter_documents(DOCUMENT_LIST, selected_keywords)
-        print(filtered_documents)
+
+    sort_type = request.args.get('sort_type', type=str, default='date')
+    reverse_order = request.args.get('reverse_order', type=bool, default=False)
+    filtered_documents = sorted(filtered_documents, key=lambda doc: getattr(doc, sort_type), reverse=reverse_order)
     
     total_documents = len(filtered_documents)
     print(f'total documents: {total_documents}')
     total_pages = math.ceil(total_documents / per_page)
     
     page = int(request.args.get('page', 1))
-    subjects = extract_common_subjects(filtered_documents)
-    authors = extract_author_counts(filtered_documents)
+    collections, doc_types = extract_collection_doctype(DOCUMENT_LIST, SELECTED_FACETS)
+    subjects = extract_common_subjects(DOCUMENT_LIST, SELECTED_FACETS)
+    authors = extract_author_counts(DOCUMENT_LIST, SELECTED_FACETS)
 
     return render_template('search.html', documents=filtered_documents, query=query, total_documents=total_documents,
                            page = page, total_pages = total_pages, clear_local_storage=clear_local_storage,
-                           facet_search=SELECTED_FACETS, subjects=subjects, authors=authors)
-
-
-@app.route('/sort')
-def sort():
-    documents = request.args.getlist('documents')
-    query =  request.args.get('query',type=str, default=None)
-    sort_type = request.args.get('sort_type', type=str, default=None)
-
-    # Sort documents
-
-
-    return render_template('search.html', documents=documents, query=query)
-
+                           facet_search=SELECTED_FACETS, subjects=subjects, authors=authors, collections=collections, doctypes=doc_types)
 @app.route("/document")
 def document():
     document_id = request.args.get('uuid', type=str, default=None)
@@ -110,22 +100,4 @@ def document():
     else:
         return redirect('search.html', code=302)
 
-def extract_common_subjects(document_list):
-    subjects = [subject for doc in document_list for subject in doc.subjects.split(';')]
-    unique_subjects = list(set(subjects))
-    result = []
-    for subject_txt in unique_subjects:
-        if subject_txt.strip():
-            subject = re.findall(r'^(.+?)\s*\(', subject_txt)[0].strip()
-            count = int(re.findall(r'\((\d+)\)[^()]*$', subject_txt)[0])
-            result.append((subject, count))
-    sorted_result = sorted(set(result), key=lambda x: x[1], reverse=True)[:100]
-    return sorted_result
-def extract_author_counts(document_list):
-    last_names = []
-    for doc in document_list:
-        for author in doc.authors.split('(author)'):
-            last_name = author.split(', ')[0].strip()
-            last_names.append(last_name)
-    authors = Counter(last_names).most_common(100)
-    return authors
+

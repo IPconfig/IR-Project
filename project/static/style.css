@@ -224,10 +224,10 @@ input {
 .li-query, .li-search, .li-search-toggle {
   color: #00A6D6;
   float: left;
-  width: 75%;
+  width: 90%;
 }
 
-.li-query, .li-search-toggle {
+.li-query, .li-search-toggle, .li-count {
   color: black;
 }
 
@@ -247,6 +247,10 @@ input {
 .li-query:hover {
   color: #00A6D6;
   cursor:pointer;
+}
+
+.datepicker {
+  width: 100px;
 }
 
 .documents {
@@ -342,4 +346,21 @@ input {
 .dropdown-item:focus, .dropdown-item:hover {
   background-color: #F1F2F2;
   color: #00A6D6 !important;
+}
+
+.custom-checkbox {
+    border-radius: 50%;
+    appearance: none;
+    /* width: 20px;
+    height: 20px; */
+    background-color: #fff;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.custom-checkbox:checked {
+    background-color: transparent;
+    border: none;
 }

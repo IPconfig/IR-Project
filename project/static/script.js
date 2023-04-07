@@ -90,15 +90,15 @@
 
         updateCheckboxColors();
 
-        const button = document.querySelector('.toggle-button');
-        const hiddenItems = document.querySelectorAll('.hidden-item');
-        let isHidden = true;
-        button.addEventListener('click', () => {
-          button.textContent = isHidden
-          ? 'Show less'
-          : 'Show more';
-
-          isHidden = !isHidden;
-          hiddenItems.forEach(item => item.classList.toggle('hidden'));
+        const facets = document.querySelectorAll('.ul-query.list');
+        facets.forEach(elem => {
+            const button = elem.querySelector('.li-search-toggle > .toggle-button')
+            const hiddenItems = elem.querySelectorAll('.hidden-item');
+            let isHidden = true;
+            button.addEventListener('click', () => {
+                button.textContent = isHidden ? 'Show less' : 'Show more';
+                isHidden = !isHidden;
+                hiddenItems.forEach(item => item.classList.toggle('hidden'));
+            });
         });
     });

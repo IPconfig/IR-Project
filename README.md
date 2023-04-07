@@ -5,7 +5,7 @@ This repository contains all code related to the Information Retrieval Project.
 # Run webservice
 The service is containerized via Docker.
 You can either run the service in development mode via:
-`$ docker compose up -d --build` and navigating to http://localhost:5010
+`$ docker compose up -d --build` and navigating to http://localhost:5000
 
 or in production mode via
 `$ docker compose -f "docker-compose.prod.yml" up -d --build` and navigating to http://localhost:80

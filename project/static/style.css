@@ -221,8 +221,23 @@ input {
   text-align: left;
 }
 
-.li-query {
+.li-query, .li-search, .li-search-toggle {
+  color: #00A6D6;
+  float: left;
+  width: 75%;
+}
+
+.li-query, .li-search-toggle {
   color: black;
+}
+
+.li-search:before, .li-search-toggle:before {
+  content: '';
+}
+
+.li-search:hover {
+  color: black;
+  cursor:pointer;
 }
 
 .li-query:before {
@@ -237,6 +252,10 @@ input {
 .documents {
   background-color: #FFF;
   padding: 1.5em 30px 200px;
+}
+
+.hidden {
+  display: none;
 }
 
 .sort {

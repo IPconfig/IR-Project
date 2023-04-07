@@ -42,7 +42,7 @@ def get_search_results(search_term):
 
     # search in all collections for now
     search_url = url + search_term_encoded + search_collection[0] + save_csv[0]
-    
+    print(search_url)
     response = requests.get(search_url)
     # Check if the response was successful
     if response.status_code == 200:
@@ -63,7 +63,6 @@ def get_search_results(search_term):
                 print("something went wrong")
     else:
         print('Failed to download CSV file')
-
 
 def count_topic_frequencies(df, column):
     """ Count the number of times a topic appears in a column of a DataFrame"""
@@ -124,5 +123,14 @@ def filter_documents(documents, keywords):
     for document in documents:
             if any(keyword in document.subjects for keyword in keywords):
                 filtered_documents.append(document)
+
+    return filtered_documents
+
+def facet_search(documents, filters):
+    filtered_documents = documents.copy()
+    for (filter_value, filter_type) in filters:
+        for document in filtered_documents:
+            if filter_value not in getattr(document, filter_type):
+                filtered_documents.remove(document)
 
     return filtered_documents

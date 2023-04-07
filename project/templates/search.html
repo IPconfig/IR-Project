@@ -1,7 +1,12 @@
 {% extends 'index.html' %}
 {% block content %}
+{% set start_idx = 0 %}
+{% set end_idx = 0 %}
+{% set total_documents = 0 %}
+{% set total_pages = 0 %}
 
-{% if documents %}
+
+{% if documents|length > 0 %}
     {% set total_documents = documents|length %}
     {% if total_documents > 20 %}
         {% set total_pages = total_documents // 20 + 1 %}
@@ -13,7 +18,7 @@
         {% set start_idx = 0 %}
     {% endif %}
     {% if start_idx + 20 < total_documents %}
-        {% set end_idx = (start_idx + 20) %}
+        {% set end_idx = start_idx + 20 %}
     {% else %}
         {% set end_idx = total_documents %}
     {% endif %}
